@@ -7,13 +7,14 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
-    public static final int MOVEMENT_THRESHOLD = 100;
     public static final int SWIPE_VELOCITY_THRESHOLD = 100;
     public static final int SWIPE_THRESHOLD = 100;
     private ImageButton mHomePage;
+    GestureDetector gestureDetector = new GestureDetector(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +62,41 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 } else {
                     onSwipeLeft();
                 }
+                result = true;
             }
         } else {
             //vertical swipe
             if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-
+                if (diffY > 0) {
+                    onSwipeUp();
+                } else {
+                    onSwipeDown();
+                }
+                result = true;
             }
         }
         return result;
     }
 
+    private void onSwipeDown() {
+        Toast.makeText(this, "You swiped down.", Toast.LENGTH_LONG).show();
+    }
+
+    private void onSwipeUp() {
+        Toast.makeText(this, "You swiped up.", Toast.LENGTH_LONG).show();
+    }
+
     private void onSwipeLeft() {
+        Toast.makeText(this, "You swiped left.", Toast.LENGTH_LONG).show();
     }
 
     private void onSwipeRight() {
+        Toast.makeText(this, "You swiped right.", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 }
