@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -68,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             //vertical swipe
             if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                 if (diffY > 0) {
-                    onSwipeUp();
-                } else {
                     onSwipeDown();
+                } else {
+                    onSwipeUp();
                 }
                 result = true;
             }
