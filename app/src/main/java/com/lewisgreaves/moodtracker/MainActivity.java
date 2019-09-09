@@ -6,14 +6,16 @@ import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
     public static final int SWIPE_VELOCITY_THRESHOLD = 100;
     public static final int SWIPE_THRESHOLD = 100;
-    private ImageButton mHomePage;
-    GestureDetector gestureDetector = new GestureDetector(this);
+    private ImageView mHomePage;
+    GestureDetector gestureDetector;
+    private boolean shouldShowLuigi = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         setContentView(R.layout.activity_main);
 
         mHomePage = findViewById(R.id.homepage);
+        gestureDetector = new GestureDetector(this, this);
     }
 
     @Override
@@ -78,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     private void onSwipeDown() {
+        if (shouldShowLuigi) {
+            mHomePage.setImageResource(R.drawable.luigi);
+        } else {
+            mHomePage.setImageResource(R.drawable.mario);
+        }
+        shouldShowLuigi=!shouldShowLuigi;
         Toast.makeText(this, "You swiped down.", Toast.LENGTH_LONG).show();
     }
 
@@ -86,11 +95,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     private void onSwipeLeft() {
-        Toast.makeText(this, "You swiped left.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Swipe up or down.", Toast.LENGTH_LONG).show();
     }
 
     private void onSwipeRight() {
-        Toast.makeText(this, "You swiped right.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Swipe up or down.", Toast.LENGTH_LONG).show();
     }
 
     @Override
