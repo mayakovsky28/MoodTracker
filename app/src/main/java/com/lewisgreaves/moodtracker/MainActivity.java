@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public static final int SWIPE_THRESHOLD = 100;
     private ImageView mHomePage;
     GestureDetector gestureDetector;
-    private boolean shouldShowLuigi = true;
+    private int currentlyDisplayedMood = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +81,40 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     private void onSwipeDown() {
-        if (shouldShowLuigi) {
-            mHomePage.setImageResource(R.drawable.luigi);
-        } else {
-            mHomePage.setImageResource(R.drawable.mario);
-        }
-        shouldShowLuigi=!shouldShowLuigi;
+    if(currentlyDisplayedMood != 0) {
+        currentlyDisplayedMood--;
+    }
+    switch (currentlyDisplayedMood) {
+        case 0: mHomePage.setImageResource(R.drawable.smiley_sad);
+        break;
+        case 1: mHomePage.setImageResource(R.drawable.smiley_disappointed);
+        break;
+        case 2: mHomePage.setImageResource(R.drawable.smiley_normal);
+        break;
+        case 3: mHomePage.setImageResource(R.drawable.smiley_happy);
+            break;
+        default:
+            throw new IllegalStateException("Unexpected value: " + currentlyDisplayedMood);
+    }
         Toast.makeText(this, "You swiped down.", Toast.LENGTH_LONG).show();
     }
 
     private void onSwipeUp() {
+        if(currentlyDisplayedMood < 4) {
+            currentlyDisplayedMood++;
+        }
+        switch (currentlyDisplayedMood) {
+            case 1: mHomePage.setImageResource(R.drawable.smiley_disappointed);
+            break;
+            case 2: mHomePage.setImageResource(R.drawable.smiley_normal);
+            break;
+            case 3: mHomePage.setImageResource(R.drawable.smiley_happy);
+            break;
+            case 4: mHomePage.setImageResource(R.drawable.smiley_super_happy);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + currentlyDisplayedMood);
+        }
         Toast.makeText(this, "You swiped up.", Toast.LENGTH_LONG).show();
     }
 
