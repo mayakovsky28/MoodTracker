@@ -2,6 +2,7 @@ package com.lewisgreaves.moodtracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         mHomePage = findViewById(R.id.homepage);
         gestureDetector = new GestureDetector(this, this);
+        mHomePage.setImageResource(R.drawable.smiley_happy);
+        mHomePage.setBackgroundColor(Color.rgb(184, 233, 134));
     }
 
     @Override
@@ -86,12 +89,16 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
     switch (currentlyDisplayedMood) {
         case 0: mHomePage.setImageResource(R.drawable.smiley_sad);
-        break;
+        mHomePage.setBackgroundColor(Color.parseColor("#ffde3c50"));
+            break;
         case 1: mHomePage.setImageResource(R.drawable.smiley_disappointed);
-        break;
+        mHomePage.setBackgroundColor(Color.parseColor("#ff9b9b9b"));
+            break;
         case 2: mHomePage.setImageResource(R.drawable.smiley_normal);
-        break;
+        mHomePage.setBackgroundColor(Color.parseColor("#a5468ad9"));
+            break;
         case 3: mHomePage.setImageResource(R.drawable.smiley_happy);
+        mHomePage.setBackgroundColor(Color.parseColor("#ffb8e986"));
             break;
         default:
             throw new IllegalStateException("Unexpected value: " + currentlyDisplayedMood);
@@ -105,12 +112,16 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         }
         switch (currentlyDisplayedMood) {
             case 1: mHomePage.setImageResource(R.drawable.smiley_disappointed);
-            break;
+            mHomePage.setBackgroundColor(Color.parseColor("#ff9b9b9b"));
+                break;
             case 2: mHomePage.setImageResource(R.drawable.smiley_normal);
-            break;
+                mHomePage.setBackgroundColor(Color.parseColor("#a5468ad9"));
+                break;
             case 3: mHomePage.setImageResource(R.drawable.smiley_happy);
-            break;
+                mHomePage.setBackgroundColor(Color.parseColor("#ffb8e986"));
+                break;
             case 4: mHomePage.setImageResource(R.drawable.smiley_super_happy);
+                mHomePage.setBackgroundColor(Color.parseColor("#fff9ec4f"));
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentlyDisplayedMood);
