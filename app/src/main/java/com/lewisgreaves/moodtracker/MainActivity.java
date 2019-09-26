@@ -2,6 +2,7 @@ package com.lewisgreaves.moodtracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -16,7 +17,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public static final int SWIPE_THRESHOLD = 100;
     private ImageView mHomePage;
     GestureDetector gestureDetector;
-    private int currentlyDisplayedMood = 3;
+    private int currentlySelectedMood = 3;
+    private SharedPreferences preferences;
+    private static final String PREFERENCE_SELECTED_MOOD = "PREFERENCE_SELECTED_MOOD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,24 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         mHomePage = findViewById(R.id.homepage);
         gestureDetector = new GestureDetector(this, this);
-        mHomePage.setImageResource(R.drawable.smiley_happy);
-        mHomePage.setBackgroundColor(Color.rgb(184, 233, 134));
+        preferences = getPreferences(0);
+        if (getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) >= 0 && getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) <=4) {
+            currentlySelectedMood = getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0);
+        }
+        switch (currentlySelectedMood) {
+            case 0: toSad();
+            break;
+            case 1: toDisappointed();
+            break;
+            case 2: toNormal();
+            break;
+            case 3: toHappy();
+            break;
+            case 4: toSuperHappy();
+            break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + currentlySelectedMood);
+        }
     }
 
     @Override
@@ -84,47 +103,41 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     private void onSwipeDown() {
-    if(currentlyDisplayedMood != 0) {
-        currentlyDisplayedMood--;
+    if(currentlySelectedMood != 0) {
+        currentlySelectedMood--;
+        preferences.edit().putInt(PREFERENCE_SELECTED_MOOD, currentlySelectedMood).apply();
     }
-    switch (currentlyDisplayedMood) {
-        case 0: mHomePage.setImageResource(R.drawable.smiley_sad);
-        mHomePage.setBackgroundColor(Color.parseColor("#ffde3c50"));
+    switch (currentlySelectedMood) {
+        case 0: toSad();
             break;
-        case 1: mHomePage.setImageResource(R.drawable.smiley_disappointed);
-        mHomePage.setBackgroundColor(Color.parseColor("#ff9b9b9b"));
+        case 1: toDisappointed();
             break;
-        case 2: mHomePage.setImageResource(R.drawable.smiley_normal);
-        mHomePage.setBackgroundColor(Color.parseColor("#a5468ad9"));
+        case 2: toNormal();
             break;
-        case 3: mHomePage.setImageResource(R.drawable.smiley_happy);
-        mHomePage.setBackgroundColor(Color.parseColor("#ffb8e986"));
+        case 3: toHappy();
             break;
         default:
-            throw new IllegalStateException("Unexpected value: " + currentlyDisplayedMood);
+            throw new IllegalStateException("Unexpected value: " + PREFERENCE_SELECTED_MOOD);
     }
         Toast.makeText(this, "You swiped down.", Toast.LENGTH_LONG).show();
     }
 
     private void onSwipeUp() {
-        if(currentlyDisplayedMood < 4) {
-            currentlyDisplayedMood++;
+        if(currentlySelectedMood < 4) {
+            currentlySelectedMood++;
+            preferences.edit().putInt(PREFERENCE_SELECTED_MOOD, currentlySelectedMood).apply();
         }
-        switch (currentlyDisplayedMood) {
-            case 1: mHomePage.setImageResource(R.drawable.smiley_disappointed);
-            mHomePage.setBackgroundColor(Color.parseColor("#ff9b9b9b"));
+        switch (currentlySelectedMood) {
+            case 1: toDisappointed();
                 break;
-            case 2: mHomePage.setImageResource(R.drawable.smiley_normal);
-                mHomePage.setBackgroundColor(Color.parseColor("#a5468ad9"));
+            case 2: toNormal();
                 break;
-            case 3: mHomePage.setImageResource(R.drawable.smiley_happy);
-                mHomePage.setBackgroundColor(Color.parseColor("#ffb8e986"));
+            case 3: toHappy();
                 break;
-            case 4: mHomePage.setImageResource(R.drawable.smiley_super_happy);
-                mHomePage.setBackgroundColor(Color.parseColor("#fff9ec4f"));
+            case 4: toSuperHappy();
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + currentlyDisplayedMood);
+                throw new IllegalStateException("Unexpected value: " + currentlySelectedMood);
         }
         Toast.makeText(this, "You swiped up.", Toast.LENGTH_LONG).show();
     }
@@ -135,6 +148,31 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     private void onSwipeRight() {
         Toast.makeText(this, "Swipe up or down.", Toast.LENGTH_LONG).show();
+    }
+
+    private void toSad() {
+        mHomePage.setImageResource(R.drawable.smiley_sad);
+        mHomePage.setBackgroundColor(Color.parseColor("#ffde3c50"));
+    }
+
+    private void toDisappointed() {
+        mHomePage.setImageResource(R.drawable.smiley_disappointed);
+        mHomePage.setBackgroundColor(Color.parseColor("#ff9b9b9b"));
+    }
+
+    private void toNormal() {
+        mHomePage.setImageResource(R.drawable.smiley_normal);
+        mHomePage.setBackgroundColor(Color.parseColor("#a5468ad9"));
+    }
+
+    private void toHappy() {
+        mHomePage.setImageResource(R.drawable.smiley_happy);
+        mHomePage.setBackgroundColor(Color.parseColor("#ffb8e986"));
+    }
+
+    private void toSuperHappy() {
+        mHomePage.setImageResource(R.drawable.smiley_super_happy);
+        mHomePage.setBackgroundColor(Color.parseColor("#fff9ec4f"));
     }
 
     @Override
