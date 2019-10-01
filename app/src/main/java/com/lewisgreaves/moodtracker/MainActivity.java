@@ -15,6 +15,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
     public static final int SWIPE_VELOCITY_THRESHOLD = 100;
@@ -36,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         preferences = getPreferences(0);
         if (getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) >= 0 && getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) <=4) {
             currentlySelectedMood = getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0);
-            setAlarm(timeInMillis);
         }
         switch (currentlySelectedMood) {
             case 0: toSad();
@@ -181,12 +189,14 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mHomePage.setBackgroundColor(Color.parseColor("#fff9ec4f"));
     }
 
-    private void setAlarm(long timeInMillis){
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AtMidnight.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
+    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    Intent intent = new Intent(this, AtMidnight.class);
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.SECOND, 0);
+    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
