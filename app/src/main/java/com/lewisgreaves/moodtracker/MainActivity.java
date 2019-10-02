@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private int currentlySelectedMood = 3;
     private SharedPreferences preferences;
     private static final String PREFERENCE_SELECTED_MOOD = "PREFERENCE_SELECTED_MOOD";
-    public static final long timeInMillis = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         mHomePage = findViewById(R.id.homepage);
         gestureDetector = new GestureDetector(this, this);
-        preferences = getPreferences(0);
+        preferences = getSharedPreferences("mySavedMoods", 0);
         if (getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) >= 0 && getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) <=4) {
             currentlySelectedMood = getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0);
         }
@@ -60,6 +59,14 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             default:
                 throw new IllegalStateException("Unexpected value: " + currentlySelectedMood);
         }
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AtMidnight.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     @Override
@@ -188,15 +195,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mHomePage.setImageResource(R.drawable.smiley_super_happy);
         mHomePage.setBackgroundColor(Color.parseColor("#fff9ec4f"));
     }
-
-    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-    Intent intent = new Intent(this, AtMidnight.class);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.HOUR_OF_DAY, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

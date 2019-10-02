@@ -19,7 +19,7 @@ public class MoodHistory extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MyAdapter(myDataset);
-        recyclerView.setAdapter(mAdapter);
+        //mAdapter = new MyAdapter(myDataset);
+        //recyclerView.setAdapter(mAdapter);
     }
 }
