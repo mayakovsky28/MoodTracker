@@ -6,20 +6,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import java.util.LinkedList;
+
 public class MoodHistory extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private final LinkedList<String> mMoodList = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_history);
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.mood_recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        //mAdapter = new MyAdapter(myDataset);
-        //recyclerView.setAdapter(mAdapter);
+        MoodAdapter adapter = new MoodAdapter(this, mMoodList);
+        recyclerView.setAdapter(adapter);
+
+        mMoodList.addLast("Yesterday");
+        mMoodList.addLast("The day before yesterday");
+        mMoodList.addLast("Two days ago");
+        mMoodList.addLast("Three days ago");
+        mMoodList.addLast("Four days ago");
+        mMoodList.addLast("Five days ago");
+        mMoodList.addLast("Six days ago");
     }
 }

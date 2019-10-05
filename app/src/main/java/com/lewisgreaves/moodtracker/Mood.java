@@ -5,16 +5,16 @@ package com.lewisgreaves.moodtracker;
  */
 
 public class Mood {
-    int moodId;
+    //int moodId;
     String moodNote;
 
-    public int getMoodId() {
-        return moodId;
-    }
-
-    public void setMoodId(int id) {
-        moodId = id;
-    }
+//    public int getMoodId() {
+//        return moodId;
+//    }
+//
+//    public void setMoodId(int id) {
+//        moodId = id;
+//    }
 
     public String getMoodNote() {
         return moodNote;
