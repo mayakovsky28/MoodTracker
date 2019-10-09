@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         gestureDetector = new GestureDetector(this, this);
         preferences = getSharedPreferences("mySavedMoods", 0);
         if (getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) >= 0 && getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) <=4) {
-            currentlySelectedMood = getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0);
+            currentlySelectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 0);
         }
         switch (currentlySelectedMood) {
             case 0: toSad();
