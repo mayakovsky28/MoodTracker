@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class AtMidnight extends BroadcastReceiver {
 
-    public static final String KEY_MOOD_ZERO = "PREFERENCE_SELECTED_MOOD";
+    public static final String KEY_MOOD_ZERO = "KEY_MOOD_ZERO";
     public static final String KEY_MOOD_ONE = "KEY_MOOD_ONE";
     public static final String KEY_MOOD_TWO = "KEY_MOOD_TWO";
     public static final String KEY_MOOD_THREE = "KEY_MOOD_THREE";
@@ -24,15 +24,22 @@ public class AtMidnight extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //code to run to save mood at end of day
+        // put mood in as json string instead of int
         SharedPreferences preferences = context.getSharedPreferences("mySavedMoods", 0);
-        preferences.edit().putInt(KEY_MOOD_SIX, preferences.getInt(KEY_MOOD_FIVE, 0)).apply();
-        preferences.edit().putInt(KEY_MOOD_FIVE, preferences.getInt(KEY_MOOD_FOUR, 0)).apply();
-        preferences.edit().putInt(KEY_MOOD_FOUR, preferences.getInt(KEY_MOOD_THREE, 0)).apply();
-        preferences.edit().putInt(KEY_MOOD_THREE, preferences.getInt(KEY_MOOD_TWO, 0)).apply();
-        preferences.edit().putInt(KEY_MOOD_TWO, preferences.getInt(KEY_MOOD_ONE, 0)).apply();
-        preferences.edit().putInt(KEY_MOOD_ONE, preferences.getInt(KEY_MOOD_ZERO, 0)).apply();
-        preferences.edit().putInt(KEY_MOOD_ZERO, preferences.getInt(KEY_MOOD_ZERO, 0)).apply();
+
+        int selectedMood = preferences.getInt(MainActivity.PREFERENCE_SELECTED_MOOD, 0);
+        String todayNote = preferences.getString(MainActivity.PREFERENCE_TODAY_NOTE, "");
+        Mood mood = new Mood(selectedMood, todayNote);
+        String json = mood.toJson();
+
+        //code to run to save mood at end of day
+        preferences.edit().putString(KEY_MOOD_SIX, preferences.getString(KEY_MOOD_FIVE, "")).apply();
+        preferences.edit().putString(KEY_MOOD_FIVE, preferences.getString(KEY_MOOD_FOUR, "")).apply();
+        preferences.edit().putString(KEY_MOOD_FOUR, preferences.getString(KEY_MOOD_THREE, "")).apply();
+        preferences.edit().putString(KEY_MOOD_THREE, preferences.getString(KEY_MOOD_TWO, "")).apply();
+        preferences.edit().putString(KEY_MOOD_TWO, preferences.getString(KEY_MOOD_ONE, "")).apply();
+        preferences.edit().putString(KEY_MOOD_ONE, preferences.getString(KEY_MOOD_ZERO, "")).apply();
+        preferences.edit().putString(KEY_MOOD_ZERO, json).apply();
         Log.d("alarm", "The alarm was triggered.");
     }
 }

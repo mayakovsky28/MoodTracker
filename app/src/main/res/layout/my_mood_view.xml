@@ -9,5 +9,6 @@
     android:layout_weight=".14285714"
     android:textSize="24sp"
     android:textStyle="bold"
-    android:layout_height="0dp" />
+    android:layout_height="0dp"
+    />
 </LinearLayout>

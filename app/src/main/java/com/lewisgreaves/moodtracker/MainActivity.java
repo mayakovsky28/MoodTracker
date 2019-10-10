@@ -37,9 +37,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private ImageView mHomePage;
     GestureDetector gestureDetector;
     private int currentlySelectedMood = 3;
+    private String todayNote = "";
     private SharedPreferences preferences;
-    private static final String PREFERENCE_SELECTED_MOOD = "PREFERENCE_SELECTED_MOOD";
-    private String mText;
+    public static final String PREFERENCE_SELECTED_MOOD = "PREFERENCE_SELECTED_MOOD";
+    public static final String PREFERENCE_TODAY_NOTE = "PREFERENCE_TODAY_NOTE";
+
+    // PREFERENCE_TODAY_NOTE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         preferences = getSharedPreferences("mySavedMoods", 0);
         if (getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) >= 0 && getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) <=4) {
             currentlySelectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 0);
+        }
+        if (!getPreferences(0).getString(PREFERENCE_TODAY_NOTE, "").equals("")) {
+            todayNote = preferences.getString(PREFERENCE_TODAY_NOTE, "");
         }
         switch (currentlySelectedMood) {
             case 0: toSad();
@@ -222,14 +228,17 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         final EditText input = new EditText(this);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setText(getPreferences(0).getString(PREFERENCE_TODAY_NOTE, ""));
         builder.setView(input);
 
 // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mText = input.getText().toString();
-                Log.d("UserInput", mText);
+                todayNote = input.getText().toString();
+                // put in sharedprefs here
+                preferences.edit().putString(PREFERENCE_TODAY_NOTE, todayNote).apply();
+                Log.d("UserInput", todayNote);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
