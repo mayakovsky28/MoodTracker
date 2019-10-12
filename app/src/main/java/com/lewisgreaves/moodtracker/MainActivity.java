@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private ImageView mHomePage;
     GestureDetector gestureDetector;
     private int currentlySelectedMood = 3;
-    private String todayNote = "";
+    private String todayNote;
     private SharedPreferences preferences;
     public static final String PREFERENCE_SELECTED_MOOD = "PREFERENCE_SELECTED_MOOD";
     public static final String PREFERENCE_TODAY_NOTE = "PREFERENCE_TODAY_NOTE";
@@ -52,12 +52,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mHomePage = findViewById(R.id.homepage);
         gestureDetector = new GestureDetector(this, this);
         preferences = getSharedPreferences("mySavedMoods", 0);
-        if (getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) >= 0 && getPreferences(0).getInt(PREFERENCE_SELECTED_MOOD, 0) <=4) {
-            currentlySelectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 0);
-        }
-        if (!getPreferences(0).getString(PREFERENCE_TODAY_NOTE, "").equals("")) {
-            todayNote = preferences.getString(PREFERENCE_TODAY_NOTE, "");
-        }
+
+        currentlySelectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 0);
+        todayNote = preferences.getString(PREFERENCE_TODAY_NOTE, "");
+
         switch (currentlySelectedMood) {
             case 0: toSad();
             break;
@@ -76,10 +74,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         Intent intent = new Intent(this, AtMidnight.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0)
+//        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 6000, pendingIntent);
     }
 
     @Override
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         final EditText input = new EditText(this);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        input.setText(getPreferences(0).getString(PREFERENCE_TODAY_NOTE, ""));
+        input.setText(todayNote);
         builder.setView(input);
 
 // Set up the buttons
@@ -238,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 todayNote = input.getText().toString();
                 // put in sharedprefs here
                 preferences.edit().putString(PREFERENCE_TODAY_NOTE, todayNote).apply();
-                Log.d("UserInput", todayNote);
+                Log.d("UserInput", preferences.getString(PREFERENCE_TODAY_NOTE, ""));
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

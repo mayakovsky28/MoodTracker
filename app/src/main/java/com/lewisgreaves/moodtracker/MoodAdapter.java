@@ -35,6 +35,8 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     @Override
     public MoodAdapter.MoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mItemView = mInflater.inflate(R.layout.my_mood_view, parent, false);
+        int height = parent.getMeasuredHeight() / 7;
+        mItemView.setMinimumHeight(height);
         return new MoodViewHolder(mItemView, this);
     }
 
