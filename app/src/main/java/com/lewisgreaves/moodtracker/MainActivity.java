@@ -1,7 +1,5 @@
 package com.lewisgreaves.moodtracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -17,32 +15,28 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
+//    arbitrary values governing swipe recognition
     public static final int SWIPE_VELOCITY_THRESHOLD = 100;
     public static final int SWIPE_THRESHOLD = 100;
+//    initialising variables
     private ImageView mHomePage;
     GestureDetector gestureDetector;
-    private int currentlySelectedMood = 3;
     private String todayNote;
-    private SharedPreferences preferences;
+//    happy face shown when app is first opened
+    private int currentlySelectedMood = 3;
+//    set up shared preferences
+    public SharedPreferences preferences;
     public static final String PREFERENCE_SELECTED_MOOD = "PREFERENCE_SELECTED_MOOD";
     public static final String PREFERENCE_TODAY_NOTE = "PREFERENCE_TODAY_NOTE";
-
-    // PREFERENCE_TODAY_NOTE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         mHomePage = findViewById(R.id.homepage);
         gestureDetector = new GestureDetector(this, this);
-        preferences = getSharedPreferences("mySavedMoods", 0);
 
-        currentlySelectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 0);
+        preferences = getSharedPreferences("mySavedMoods", 0);
+        currentlySelectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 3);
         todayNote = preferences.getString(PREFERENCE_TODAY_NOTE, "");
 
         switch (currentlySelectedMood) {
@@ -70,15 +64,16 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             default:
                 throw new IllegalStateException("Unexpected value: " + currentlySelectedMood);
         }
+//        trigger broadcast receiver at midnight
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AtMidnight.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY, 0);
-//        calendar.set(Calendar.MINUTE, 0);
-//        calendar.set(Calendar.SECOND, 0)
-//        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 6000, pendingIntent);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     @Override
@@ -88,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public void onShowPress(MotionEvent motionEvent) {
-
     }
 
     @Override
@@ -103,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
-
     }
 
     @Override
@@ -135,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return result;
     }
 
-    private void onSwipeDown() {
+    public void onSwipeDown() {
     if(currentlySelectedMood != 0) {
         currentlySelectedMood--;
         preferences.edit().putInt(PREFERENCE_SELECTED_MOOD, currentlySelectedMood).apply();
@@ -155,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         Toast.makeText(this, "You swiped down.", Toast.LENGTH_LONG).show();
     }
 
-    private void onSwipeUp() {
+    void onSwipeUp() {
         if(currentlySelectedMood < 4) {
             currentlySelectedMood++;
             preferences.edit().putInt(PREFERENCE_SELECTED_MOOD, currentlySelectedMood).apply();
