@@ -39,7 +39,6 @@ public class EspressoTest {
     public void swipeChangesMood() {
         onView(withId(R.id.homepage)).perform(swipeDown());
 //        onView(withId(R.id.homepage)).check(matches(withDrawable(R.drawable.smiley_sad)));
-//        onView(withId(R.id.homepage
     }
 
     @Test
@@ -48,11 +47,11 @@ public class EspressoTest {
         onView(ViewMatchers.withText("Cancel")).perform(click());
         onView(withId(R.id.add_note)).perform(click());
         onView(hasFocus()).check(matches(ViewMatchers.withText((""))));
-        onView(ViewMatchers.withText("Describe")).check(matches(isDisplayed())).perform(typeText("Just got a date!"));
+        onView(ViewMatchers.withText("Describe")).check(matches(isDisplayed())).perform(typeText("Cake!"));
         onView(ViewMatchers.withText("OK")).perform(click());
         onView(withId(R.id.homepage)).check(matches(ViewMatchers.withText("")));
         onView(withId(R.id.add_note)).perform(click());
-        onView(ViewMatchers.withText("Describe")).check(matches(ViewMatchers.withText("Just got a date!")));
+        onView(ViewMatchers.withText("Describe")).check(matches(ViewMatchers.withText("Cake!")));
     }
 
     @Test
