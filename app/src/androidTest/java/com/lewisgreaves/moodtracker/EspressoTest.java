@@ -14,6 +14,7 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.text.IsEmptyString;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +48,7 @@ public class EspressoTest {
         onView(withId(R.id.add_note)).perform(click());
         onView(ViewMatchers.withText("Cancel")).perform(click());
         onView(withId(R.id.add_note)).perform(click());
-        onView(hasFocus()).check(matches(ViewMatchers.withText((""))));
+//        onView(hasFocus()).check(matches(isEmpty));
         onView(ViewMatchers.withText("Describe")).check(matches(isDisplayed())).perform(typeText("Just got a date!"));
         onView(ViewMatchers.withText("OK")).perform(click());
         onView(withId(R.id.homepage)).check(matches(ViewMatchers.withText("")));

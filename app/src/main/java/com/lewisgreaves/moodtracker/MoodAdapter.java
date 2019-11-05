@@ -2,6 +2,7 @@ package com.lewisgreaves.moodtracker;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.icu.text.MeasureFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,9 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     public void onBindViewHolder(@NonNull MoodAdapter.MoodViewHolder holder, int position) {
         final Mood mCurrent = mMoodList.get(position);
         holder.parentView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
+        int partWidth = holder.parentView.getMeasuredWidth() / 5;
+        int width = partWidth * mCurrent.moodId++;
+        holder.myMoodView.setMinWidth(width);
         holder.myMoodView.setText(getDayText(position));
         holder.myNoteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,11 +81,16 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
         switch(mCurrent.moodId) {
             case 0: return "#ffde3c50";
             case 1: return "#ff9b9b9b";
+            case 3: return "#ffb8e986";
+            case 4: return "#fff9ec4f";
             default: return "#a5468ad9";
         }
     }
 
 //    getMeasuredWidth - create method and switch statement
+    private int getWidth(Mood mCurrent) {
+        return mCurrent.moodId + 1;
+        }
 
     @Override
     public int getItemCount() {
