@@ -218,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
 // Set up the input
         final EditText input = new EditText(this);
+        input.setId(R.id.noteEditText);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setText(todayNote);

@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.LinkedList;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder> {
 
     class MoodViewHolder extends RecyclerView.ViewHolder {
@@ -33,10 +36,13 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     private final LinkedList<Mood> mMoodList;
     private Context mContext;
     private LayoutInflater mInflater;
-    MoodAdapter(Context context, LinkedList<Mood> moodList) {
+    private int partWidth;
+
+    MoodAdapter(Context context, LinkedList<Mood> moodList, int partWidth) {
         mInflater = LayoutInflater.from(context);
         mMoodList = moodList;
         mContext = context;
+        this.partWidth = partWidth;
     }
 
     @NonNull
@@ -51,11 +57,19 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     @Override
     public void onBindViewHolder(@NonNull MoodAdapter.MoodViewHolder holder, int position) {
         final Mood mCurrent = mMoodList.get(position);
+
         holder.parentView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
-        int partWidth = holder.parentView.getMeasuredWidth() / 5;
+
         int width = partWidth * mCurrent.moodId++;
-        holder.myMoodView.setMinWidth(width);
+        holder.myMoodView.setLayoutParams(new ViewGroup.LayoutParams(width, holder.myMoodView.getLayoutParams().height));
+
         holder.myMoodView.setText(getDayText(position));
+        if (mCurrent.moodNote.isEmpty()) {
+            holder.myNoteImageView.setVisibility(GONE);
+        } else {
+            holder.myNoteImageView.setVisibility(VISIBLE);
+        }
+
         holder.myNoteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

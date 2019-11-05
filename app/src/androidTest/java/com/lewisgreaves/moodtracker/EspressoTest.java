@@ -38,6 +38,7 @@ public class EspressoTest {
 
     @Test
     public void swipeChangesMood() {
+//        check that it might be swiping the other way
         onView(withId(R.id.homepage)).perform(swipeDown());
 //        onView(withId(R.id.homepage)).check(matches(withDrawable(R.drawable.smiley_sad)));
 //        onView(withId(R.id.homepage
@@ -48,7 +49,7 @@ public class EspressoTest {
         onView(withId(R.id.add_note)).perform(click());
         onView(ViewMatchers.withText("Cancel")).perform(click());
         onView(withId(R.id.add_note)).perform(click());
-//        onView(hasFocus()).check(matches(isEmpty));
+//        TODO: onView(withId(R.id.noteEditText)).... how to get the text...https://www.google.com/url?q=https://stackoverflow.com/a/45601564/5066615&sa=D&source=hangouts&ust=1573077736502000&usg=AFQjCNHV_b_OljSD6wzL5DUgev6iNPU_Ug
         onView(ViewMatchers.withText("Describe")).check(matches(isDisplayed())).perform(typeText("Just got a date!"));
         onView(ViewMatchers.withText("OK")).perform(click());
         onView(withId(R.id.homepage)).check(matches(ViewMatchers.withText("")));
@@ -59,6 +60,14 @@ public class EspressoTest {
     @Test
     public void tappingViewHistoryChangesActivity() {
         onView(withId(R.id.view_history)).perform(click());
-//        onView(withId(R.id.mood_recycler_view)).check(isDisplayed());
+        onView(withId(R.id.mood_recycler_view)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void firstItemStaticTextIsYesterday() {}
+
+    @Test
+    public void onCreateThreeImagesVisible() {}
+
+//    TODO: think of some more tests
 }
