@@ -46,8 +46,10 @@ public class MoodHistory extends AppCompatActivity {
         mMoodList.add(moodSix);
 
         setContentView(R.layout.activity_mood_history);
-        RelativeLayout relativeLayout = findViewById(R.id.mood_history_parent_layout);
-        int partWidth = relativeLayout.getMeasuredWidth() / 5;
+//        RelativeLayout relativeLayout = findViewById(R.id.mood_history_parent_layout);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+//        int partWidth = relativeLayout.getMeasuredWidth() / 5;
+        int partWidth = layoutParams.width / 5;
         RecyclerView recyclerView = findViewById(R.id.mood_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
