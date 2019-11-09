@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <item type="id" name="noteEditText" />
-        <item type="id" name="layout2" />
-        <item type="id" name="layout3" />
+    <item name="noteEditText" type="id" />
+    <item name="layout2" type="id" />
+    <item name="layout3" type="id" />
 </resources>
