@@ -32,7 +32,9 @@ import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.hasBackground;
 import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withChild;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.lewisgreaves.moodtracker.EspressoTestsMatchers.withDrawable;
 import static org.hamcrest.Matchers.not;
 
@@ -105,10 +107,18 @@ public class EspressoTest {
     }
 
     @Test
-    public void firstItemStaticTextIsYesterday() {}
+    public void firstItemStaticTextIsYesterday() {
+        onView(withId(R.id.view_history)).perform(click());
+        onView(withId(R.id.mood_recycler_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.mood_recycler_view)).check(matches(ViewMatchers.withText("Yesterday")));
+    }
 
     @Test
-    public void onCreateThreeImagesVisible() {}
+    public void onCreateThreeImagesVisible() {
+        onView(withId(R.id.homepage)).check(matches(withChild(withId(R.id.add_note))));
+        onView(withId(R.id.homepage)).check(matches(withChild(withId(R.id.view_history))));
+        onView(withId(R.id.homepage)).check(matches(withChild(withDrawable(R.drawable.smiley_happy))));
+    }
 
 //    TODO: think of some more tests
 }

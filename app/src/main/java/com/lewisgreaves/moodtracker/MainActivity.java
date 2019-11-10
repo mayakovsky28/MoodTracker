@@ -20,11 +20,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
-//    arbitrary values governing swipe recognition
+    public static final String KEY_MOOD_ZERO = "KEY_MOOD_ZERO";
+
+    //    arbitrary values governing swipe recognition
     public static final int SWIPE_VELOCITY_THRESHOLD = 100;
     public static final int SWIPE_THRESHOLD = 100;
 //    initialising variables
@@ -208,6 +214,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     public void viewHistory(View view){
+        SharedPreferences preferences = this.getSharedPreferences("mySavedMoods", 0);
+        int selectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 3);
+        String todayNote = preferences.getString(PREFERENCE_TODAY_NOTE, "");
+        Mood mood = new Mood(selectedMood, todayNote);
+        String json = mood.toJson();
+        preferences.edit().putString(KEY_MOOD_ZERO, json).apply();
+
         Intent intent = new Intent(this, MoodHistory.class);
         startActivity(intent);
     }

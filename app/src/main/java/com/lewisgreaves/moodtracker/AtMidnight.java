@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import java.util.ArrayList;
+import static com.lewisgreaves.moodtracker.MainActivity.KEY_MOOD_ZERO;
 
 /*
  * Created by @Mayakovsky28 on 9/30/19.
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class AtMidnight extends BroadcastReceiver {
 
-    public static final String KEY_MOOD_ZERO = "KEY_MOOD_ZERO";
     public static final String KEY_MOOD_ONE = "KEY_MOOD_ONE";
     public static final String KEY_MOOD_TWO = "KEY_MOOD_TWO";
     public static final String KEY_MOOD_THREE = "KEY_MOOD_THREE";
@@ -27,7 +26,7 @@ public class AtMidnight extends BroadcastReceiver {
         // put mood in as json string instead of int
         SharedPreferences preferences = context.getSharedPreferences("mySavedMoods", 0);
 
-        int selectedMood = preferences.getInt(MainActivity.PREFERENCE_SELECTED_MOOD, 0);
+        int selectedMood = preferences.getInt(MainActivity.PREFERENCE_SELECTED_MOOD, 3);
         String todayNote = preferences.getString(MainActivity.PREFERENCE_TODAY_NOTE, "");
         Mood mood = new Mood(selectedMood, todayNote);
         String json = mood.toJson();

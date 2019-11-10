@@ -1,12 +1,12 @@
 package com.lewisgreaves.moodtracker;
 
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
@@ -18,7 +18,7 @@ import static com.lewisgreaves.moodtracker.AtMidnight.KEY_MOOD_ONE;
 import static com.lewisgreaves.moodtracker.AtMidnight.KEY_MOOD_SIX;
 import static com.lewisgreaves.moodtracker.AtMidnight.KEY_MOOD_THREE;
 import static com.lewisgreaves.moodtracker.AtMidnight.KEY_MOOD_TWO;
-import static com.lewisgreaves.moodtracker.AtMidnight.KEY_MOOD_ZERO;
+import static com.lewisgreaves.moodtracker.MainActivity.KEY_MOOD_ZERO;
 
 public class MoodHistory extends AppCompatActivity {
     private final LinkedList<Mood> mMoodList = new LinkedList<>();
@@ -47,12 +47,13 @@ public class MoodHistory extends AppCompatActivity {
 
         setContentView(R.layout.activity_mood_history);
 //        RelativeLayout relativeLayout = findViewById(R.id.mood_history_parent_layout);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 //        int partWidth = relativeLayout.getMeasuredWidth() / 5;
         int partWidth = layoutParams.width / 5;
         RecyclerView recyclerView = findViewById(R.id.mood_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+//        MoodAdapter adapter = new MoodAdapter(this, mMoodList);
         MoodAdapter adapter = new MoodAdapter(this, mMoodList, partWidth);
         recyclerView.setAdapter(adapter);
     }

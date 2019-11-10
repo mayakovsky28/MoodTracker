@@ -2,11 +2,11 @@ package com.lewisgreaves.moodtracker;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.icu.text.MeasureFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +27,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
 
         MoodViewHolder(View moodView) {
             super(moodView);
-            myMoodView =  moodView.findViewById(R.id.mood);
+            myMoodView = moodView.findViewById(R.id.mood);
             myNoteImageView = moodView.findViewById(R.id.noteImageView);
             parentView = moodView;
         }
@@ -42,7 +42,6 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
         mInflater = LayoutInflater.from(context);
         mMoodList = moodList;
         mContext = context;
-        this.partWidth = partWidth;
     }
 
     @NonNull
@@ -61,7 +60,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
         holder.parentView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
 
         int width = partWidth * mCurrent.moodId++;
-        holder.myMoodView.setLayoutParams(new ViewGroup.LayoutParams(width, holder.myMoodView.getLayoutParams().height));
+        holder.myMoodView.setLayoutParams(new LinearLayout.LayoutParams(width, holder.myMoodView.getLayoutParams().height));
 
         holder.myMoodView.setText(getDayText(position));
         if (mCurrent.moodNote.isEmpty()) {
@@ -73,38 +72,46 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
         holder.myNoteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,  mCurrent.moodNote, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, mCurrent.moodNote, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private String getDayText(int position) {
-        switch(position) {
-            case 0: return "Yesterday";
-            case 1: return "Vorgestern";
-            case 2: return "Vorvorgestern";
-            case 3: return "Four days ago";
-            case 4: return "Five days ago";
-            case 5: return "Six days ago";
-            case 6: return "Seven days ago";
-            default: return "New space time dimension reached";
+        switch (position) {
+            case 0:
+                return "Yesterday";
+            case 1:
+                return "Vorgestern";
+            case 2:
+                return "Vorvorgestern";
+            case 3:
+                return "Four days ago";
+            case 4:
+                return "Five days ago";
+            case 5:
+                return "Six days ago";
+            case 6:
+                return "Seven days ago";
+            default:
+                return "New space time dimension reached";
         }
     }
 
     private String getMoodColour(Mood mCurrent) {
-        switch(mCurrent.moodId) {
-            case 0: return "#ffde3c50";
-            case 1: return "#ff9b9b9b";
-            case 3: return "#ffb8e986";
-            case 4: return "#fff9ec4f";
-            default: return "#a5468ad9";
+        switch (mCurrent.moodId) {
+            case 0:
+                return "#ffde3c50";
+            case 1:
+                return "#ff9b9b9b";
+            case 2:
+                return "#a5468ad9";
+            case 4:
+                return "#fff9ec4f";
+            default:
+                return "#ffb8e986";
         }
     }
-
-//    getMeasuredWidth - create method and switch statement
-    private int getWidth(Mood mCurrent) {
-        return mCurrent.moodId + 1;
-        }
 
     @Override
     public int getItemCount() {
