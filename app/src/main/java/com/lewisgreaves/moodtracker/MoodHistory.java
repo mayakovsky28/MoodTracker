@@ -1,7 +1,7 @@
 package com.lewisgreaves.moodtracker;
 
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,27 +37,32 @@ public class MoodHistory extends AppCompatActivity {
         Mood moodFive = getMood(KEY_MOOD_FIVE);
         Mood moodSix = getMood(KEY_MOOD_SIX);
 
-        mMoodList.add(moodZero);
-        mMoodList.add(mood);
-        mMoodList.add(moodTwo);
-        mMoodList.add(moodThree);
-        mMoodList.add(moodFour);
-        mMoodList.add(moodFive);
-        mMoodList.add(moodSix);
+        mMoodList.add(new Mood(4, "4"));
+        mMoodList.add(new Mood(1, "1"));
+        mMoodList.add(new Mood(2, "2"));
+        mMoodList.add(new Mood(1, "1"));
+        mMoodList.add(new Mood(3, "3"));
+        mMoodList.add(new Mood(3, "3"));
+        mMoodList.add(new Mood(0, "0"));
 
         setContentView(R.layout.activity_mood_history);
         RelativeLayout relativeLayout = findViewById(R.id.mood_history_parent_layout);
-        int partWidth = relativeLayout.getMeasuredWidth() / 5;
+        //int partWidth = relativeLayout.getMeasuredWidth() / 5;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+
         RecyclerView recyclerView = findViewById(R.id.mood_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        MoodAdapter adapter = new MoodAdapter(this, mMoodList, partWidth);
+        MoodAdapter adapter = new MoodAdapter(this, mMoodList, screenWidth);
         recyclerView.setAdapter(adapter);
     }
 
     private Mood getMood(String key) {
         String moodOne = preferences.getString(key, "");
-        Gson gson  = new Gson();
+        Gson gson = new Gson();
         return gson.fromJson(moodOne, Mood.class);
     }
 }

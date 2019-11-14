@@ -2,11 +2,11 @@ package com.lewisgreaves.moodtracker;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.icu.text.MeasureFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,13 +21,13 @@ import static android.view.View.VISIBLE;
 public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder> {
 
     class MoodViewHolder extends RecyclerView.ViewHolder {
-        TextView myMoodView;
+        TextView myMoodTextView;
         ImageView myNoteImageView;
         View parentView;
 
         MoodViewHolder(View moodView) {
             super(moodView);
-            myMoodView =  moodView.findViewById(R.id.mood);
+            myMoodTextView =  moodView.findViewById(R.id.mood);
             myNoteImageView = moodView.findViewById(R.id.noteImageView);
             parentView = moodView;
         }
@@ -36,13 +36,13 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     private final LinkedList<Mood> mMoodList;
     private Context mContext;
     private LayoutInflater mInflater;
-    private int partWidth;
+    private int screenWidth;
 
-    MoodAdapter(Context context, LinkedList<Mood> moodList, int partWidth) {
+    MoodAdapter(Context context, LinkedList<Mood> moodList, int screenWidth) {
         mInflater = LayoutInflater.from(context);
         mMoodList = moodList;
         mContext = context;
-        this.partWidth = partWidth;
+        this.screenWidth = screenWidth;
     }
 
     @NonNull
@@ -60,10 +60,13 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
 
         holder.parentView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
 
-        int width = partWidth * mCurrent.moodId++;
-        holder.myMoodView.setLayoutParams(new ViewGroup.LayoutParams(width, holder.myMoodView.getLayoutParams().height));
+        int width = (screenWidth / 5) * ++mCurrent.moodId;
 
-        holder.myMoodView.setText(getDayText(position));
+        holder.parentView.setLayoutParams(
+            new LinearLayout.LayoutParams(width, holder.myMoodTextView.getLayoutParams().height)
+        );
+
+        holder.myMoodTextView.setText(getDayText(position));
         if (mCurrent.moodNote.isEmpty()) {
             holder.myNoteImageView.setVisibility(GONE);
         } else {
