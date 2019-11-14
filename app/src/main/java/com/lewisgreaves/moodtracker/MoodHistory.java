@@ -2,7 +2,6 @@ package com.lewisgreaves.moodtracker;
 
 import android.content.SharedPreferences;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,12 +20,15 @@ import static com.lewisgreaves.moodtracker.AtMidnight.KEY_MOOD_TWO;
 import static com.lewisgreaves.moodtracker.MainActivity.KEY_MOOD_ZERO;
 
 public class MoodHistory extends AppCompatActivity {
+    //    create list for Mood objects
     private final LinkedList<Mood> mMoodList = new LinkedList<>();
     private SharedPreferences preferences;
 
     @Override
     protected void onStart() {
         super.onStart();
+
+//      access Mood objects from shared preferences and add them to the list
         preferences = getSharedPreferences("mySavedMoods", 0);
 
         Mood moodZero = getMood(KEY_MOOD_ZERO);
@@ -46,21 +48,25 @@ public class MoodHistory extends AppCompatActivity {
         mMoodList.add(moodSix);
 
         setContentView(R.layout.activity_mood_history);
-//        RelativeLayout relativeLayout = findViewById(R.id.mood_history_parent_layout);
+
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        int partWidth = relativeLayout.getMeasuredWidth() / 5;
         int partWidth = layoutParams.width / 5;
+
         RecyclerView recyclerView = findViewById(R.id.mood_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-//        MoodAdapter adapter = new MoodAdapter(this, mMoodList);
+
         MoodAdapter adapter = new MoodAdapter(this, mMoodList, partWidth);
         recyclerView.setAdapter(adapter);
     }
 
     private Mood getMood(String key) {
+//      function to get Mood object from shared preferences where it is stored as a json string
         String moodOne = preferences.getString(key, "");
-        Gson gson  = new Gson();
+        Gson gson = new Gson();
+        if (moodOne.isEmpty()) {
+            return new Mood(3, "");
+        }
         return gson.fromJson(moodOne, Mood.class);
     }
 }

@@ -7,6 +7,8 @@ package com.lewisgreaves.moodtracker;
 import com.google.gson.Gson;
 
 public class Mood {
+
+//    set up the Mood class
     int moodId;
     String moodNote;
 

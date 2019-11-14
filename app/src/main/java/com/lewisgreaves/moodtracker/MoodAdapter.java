@@ -57,10 +57,10 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     public void onBindViewHolder(@NonNull MoodAdapter.MoodViewHolder holder, int position) {
         final Mood mCurrent = mMoodList.get(position);
 
-        holder.parentView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
+        holder.itemView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
 
-        int width = partWidth * mCurrent.moodId++;
-        holder.myMoodView.setLayoutParams(new LinearLayout.LayoutParams(width, holder.myMoodView.getLayoutParams().height));
+        int width = partWidth * ++mCurrent.moodId;
+        holder.itemView.setLayoutParams(new LinearLayout.LayoutParams(width, holder.itemView.getLayoutParams().height / 7));
 
         holder.myMoodView.setText(getDayText(position));
         if (mCurrent.moodNote.isEmpty()) {
@@ -99,6 +99,9 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     }
 
     private String getMoodColour(Mood mCurrent) {
+        if (mCurrent == null) {
+            return "#ffb8e986";
+        }
         switch (mCurrent.moodId) {
             case 0:
                 return "#ffde3c50";

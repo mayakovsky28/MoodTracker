@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.EditText;
 
 import static com.lewisgreaves.moodtracker.MainActivity.KEY_MOOD_ZERO;
+import static com.lewisgreaves.moodtracker.MainActivity.PREFERENCE_TODAY_NOTE;
 
 /*
  * Created by @Mayakovsky28 on 9/30/19.
@@ -23,7 +25,7 @@ public class AtMidnight extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // put mood in as json string instead of int
+        // put mood in as json string
         SharedPreferences preferences = context.getSharedPreferences("mySavedMoods", 0);
 
         int selectedMood = preferences.getInt(MainActivity.PREFERENCE_SELECTED_MOOD, 3);
@@ -39,6 +41,8 @@ public class AtMidnight extends BroadcastReceiver {
         preferences.edit().putString(KEY_MOOD_TWO, preferences.getString(KEY_MOOD_ONE, "")).apply();
         preferences.edit().putString(KEY_MOOD_ONE, preferences.getString(KEY_MOOD_ZERO, "")).apply();
         preferences.edit().putString(KEY_MOOD_ZERO, json).apply();
+//        remove note so that EditText is blank for next day
+        preferences.edit().putString(PREFERENCE_TODAY_NOTE, "").apply();
         Log.d("alarm", "The alarm was triggered.");
     }
 }

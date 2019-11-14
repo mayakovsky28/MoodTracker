@@ -20,11 +20,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
@@ -33,13 +29,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     //    arbitrary values governing swipe recognition
     public static final int SWIPE_VELOCITY_THRESHOLD = 100;
     public static final int SWIPE_THRESHOLD = 100;
-//    initialising variables
+    //    initialising variables
     private ImageView mHomePage;
     GestureDetector gestureDetector;
     private String todayNote;
-//    happy face shown when app is first opened
+    //    happy face shown when app is first opened
     private int currentlySelectedMood = 3;
-//    set up shared preferences
+    //    set up shared preferences
     public SharedPreferences preferences;
     public static final String PREFERENCE_SELECTED_MOOD = "PREFERENCE_SELECTED_MOOD";
     public static final String PREFERENCE_TODAY_NOTE = "PREFERENCE_TODAY_NOTE";
@@ -52,21 +48,28 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mHomePage = findViewById(R.id.homepage);
         gestureDetector = new GestureDetector(this, this);
 
+//        access shared preferences
         preferences = getSharedPreferences("mySavedMoods", 0);
         currentlySelectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 3);
         todayNote = preferences.getString(PREFERENCE_TODAY_NOTE, "");
 
+//        get the current mood and call corresponding display method
         switch (currentlySelectedMood) {
-            case 0: toSad();
-            break;
-            case 1: toDisappointed();
-            break;
-            case 2: toNormal();
-            break;
-            case 3: toHappy();
-            break;
-            case 4: toSuperHappy();
-            break;
+            case 0:
+                toSad();
+                break;
+            case 1:
+                toDisappointed();
+                break;
+            case 2:
+                toNormal();
+                break;
+            case 3:
+                toHappy();
+                break;
+            case 4:
+                toSuperHappy();
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentlySelectedMood);
         }
@@ -135,38 +138,48 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     public void onSwipeDown() {
-    if(currentlySelectedMood != 0) {
-        currentlySelectedMood--;
-        preferences.edit().putInt(PREFERENCE_SELECTED_MOOD, currentlySelectedMood).apply();
-    }
-    switch (currentlySelectedMood) {
-        case 0: toSad();
-            break;
-        case 1: toDisappointed();
-            break;
-        case 2: toNormal();
-            break;
-        case 3: toHappy();
-            break;
-        default:
-            throw new IllegalStateException("Unexpected value: " + PREFERENCE_SELECTED_MOOD);
-    }
+//        user selects sadder mood by swiping down
+        if (currentlySelectedMood != 0) {
+            currentlySelectedMood--;
+            preferences.edit().putInt(PREFERENCE_SELECTED_MOOD, currentlySelectedMood).apply();
+        }
+        switch (currentlySelectedMood) {
+            case 0:
+                toSad();
+                break;
+            case 1:
+                toDisappointed();
+                break;
+            case 2:
+                toNormal();
+                break;
+            case 3:
+                toHappy();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + PREFERENCE_SELECTED_MOOD);
+        }
         Toast.makeText(this, "You swiped down.", Toast.LENGTH_LONG).show();
     }
 
     void onSwipeUp() {
-        if(currentlySelectedMood < 4) {
+//        user selects happier mood by swiping up
+        if (currentlySelectedMood < 4) {
             currentlySelectedMood++;
             preferences.edit().putInt(PREFERENCE_SELECTED_MOOD, currentlySelectedMood).apply();
         }
         switch (currentlySelectedMood) {
-            case 1: toDisappointed();
+            case 1:
+                toDisappointed();
                 break;
-            case 2: toNormal();
+            case 2:
+                toNormal();
                 break;
-            case 3: toHappy();
+            case 3:
+                toHappy();
                 break;
-            case 4: toSuperHappy();
+            case 4:
+                toSuperHappy();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + currentlySelectedMood);
@@ -182,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         Toast.makeText(this, "Swipe up or down.", Toast.LENGTH_LONG).show();
     }
 
+    //    display functions
     private void toSad() {
         mHomePage.setImageResource(R.drawable.smiley_sad);
         mHomePage.setBackgroundColor(Color.parseColor("#ffde3c50"));
@@ -213,7 +227,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return super.onTouchEvent(event);
     }
 
-    public void viewHistory(View view){
+    public void viewHistory(View view) {
+
+//        put elements of Mood class into key for use in mood history activity
         SharedPreferences preferences = this.getSharedPreferences("mySavedMoods", 0);
         int selectedMood = preferences.getInt(PREFERENCE_SELECTED_MOOD, 3);
         String todayNote = preferences.getString(PREFERENCE_TODAY_NOTE, "");
@@ -221,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         String json = mood.toJson();
         preferences.edit().putString(KEY_MOOD_ZERO, json).apply();
 
+//        switch to mood history activity
         Intent intent = new Intent(this, MoodHistory.class);
         startActivity(intent);
     }
@@ -232,7 +249,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 // Set up the input
         final EditText input = new EditText(this);
         input.setId(R.id.noteEditText);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+
+// Specify the type of input expected
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setText(todayNote);
         builder.setView(input);
@@ -242,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 todayNote = input.getText().toString();
-                // put in sharedprefs here
+                // put into shared preferencess here
                 preferences.edit().putString(PREFERENCE_TODAY_NOTE, todayNote).apply();
                 Log.d("UserInput", preferences.getString(PREFERENCE_TODAY_NOTE, ""));
             }
