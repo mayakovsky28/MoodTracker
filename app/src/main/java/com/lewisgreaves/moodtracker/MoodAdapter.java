@@ -21,13 +21,13 @@ import static android.view.View.VISIBLE;
 public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder> {
 
     class MoodViewHolder extends RecyclerView.ViewHolder {
-        TextView myMoodView;
+        TextView myMoodTextView;
         ImageView myNoteImageView;
         View parentView;
 
         MoodViewHolder(View moodView) {
             super(moodView);
-            myMoodView = moodView.findViewById(R.id.mood);
+            myMoodTextView = moodView.findViewById(R.id.mood);
             myNoteImageView = moodView.findViewById(R.id.noteImageView);
             parentView = moodView;
         }
@@ -36,12 +36,13 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     private final LinkedList<Mood> mMoodList;
     private Context mContext;
     private LayoutInflater mInflater;
-    private int partWidth;
+    private int screenWidth;
 
-    MoodAdapter(Context context, LinkedList<Mood> moodList, int partWidth) {
+    MoodAdapter(Context context, LinkedList<Mood> moodList, int screenWidth) {
         mInflater = LayoutInflater.from(context);
         mMoodList = moodList;
         mContext = context;
+        this.screenWidth = screenWidth;
     }
 
     @NonNull
@@ -57,12 +58,12 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MoodViewHolder
     public void onBindViewHolder(@NonNull MoodAdapter.MoodViewHolder holder, int position) {
         final Mood mCurrent = mMoodList.get(position);
 
-        holder.itemView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
+        holder.parentView.setBackgroundColor(Color.parseColor(getMoodColour(mCurrent)));
 
-        int width = partWidth * ++mCurrent.moodId;
-        holder.itemView.setLayoutParams(new LinearLayout.LayoutParams(width, holder.itemView.getLayoutParams().height / 7));
+        int width = (screenWidth / 5) * ++mCurrent.moodId;
+        holder.parentView.setLayoutParams(new LinearLayout.LayoutParams(width, holder.myMoodTextView.getLayoutParams().height));
 
-        holder.myMoodView.setText(getDayText(position));
+        holder.myMoodTextView.setText(getDayText(position));
         if (mCurrent.moodNote.isEmpty()) {
             holder.myNoteImageView.setVisibility(GONE);
         } else {
