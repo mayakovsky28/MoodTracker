@@ -1,6 +1,7 @@
 package com.lewisgreaves.moodtracker;
 
 import android.content.SharedPreferences;
+import android.util.DisplayMetrics;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,14 +50,15 @@ public class MoodHistory extends AppCompatActivity {
 
         setContentView(R.layout.activity_mood_history);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        int partWidth = layoutParams.width / 5;
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
 
         RecyclerView recyclerView = findViewById(R.id.mood_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        MoodAdapter adapter = new MoodAdapter(this, mMoodList, partWidth);
+        MoodAdapter adapter = new MoodAdapter(this, mMoodList, screenWidth);
         recyclerView.setAdapter(adapter);
     }
 

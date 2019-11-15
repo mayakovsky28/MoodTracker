@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.test.espresso.action.TypeTextAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -17,25 +16,21 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.text.IsEmptyString;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.app.PendingIntent.getActivity;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
-import static androidx.test.espresso.matcher.ViewMatchers.hasBackground;
-import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withChild;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.lewisgreaves.moodtracker.EspressoTestsMatchers.withDrawable;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
@@ -75,10 +70,8 @@ public class EspressoTest {
 
     @Test
     public void swipeChangesMood() {
-//        check that it might be swiping the other way
         onView(withId(R.id.homepage)).perform(swipeDown());
-//        onView(withId(R.id.homepage)).check(matches(withDrawable(R.drawable.smiley_sad)));
-//        onView(withId(R.id.homepage
+        onView(withId(R.id.homepage)).check(matches(withDrawable(R.drawable.smiley_sad)));
     }
 
     @Test
@@ -103,7 +96,8 @@ public class EspressoTest {
     @Test
     public void tappingNoteIconInRecyclerViewShowsNoteToast(){
         onView(withId(R.id.view_history)).perform(click());
-        onView(withId(R.id.noteImageView)).inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.noteImageView))).perform(click());
+        onView(withId(R.id.mood_recycler_view)).inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -119,6 +113,4 @@ public class EspressoTest {
         onView(withId(R.id.homepage)).check(matches(withChild(withId(R.id.view_history))));
         onView(withId(R.id.homepage)).check(matches(withChild(withDrawable(R.drawable.smiley_happy))));
     }
-
-//    TODO: think of some more tests
 }

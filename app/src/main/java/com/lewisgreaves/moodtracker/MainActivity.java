@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -217,6 +218,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     private void toSuperHappy() {
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.gleam);
+        mp.start();
         mHomePage.setImageResource(R.drawable.smiley_super_happy);
         mHomePage.setBackgroundColor(Color.parseColor("#fff9ec4f"));
     }
