@@ -248,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public void addNote(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Describe your mood today.");
+        view.setId(R.id.describe);
 
 // Set up the input
         final EditText input = new EditText(this);
